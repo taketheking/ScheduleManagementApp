@@ -3,17 +3,17 @@
 
 ## 1. API 명세서
 
-<img width="1000" alt="스크린샷 2024-10-31 오후 4 53 58" src="https://github.com/user-attachments/assets/86bf1099-de19-4ab4-a915-d92e5bc6c370">
+<img width="1000" alt="스크린샷 2024-10-31 오후 5 45 59" src="https://github.com/user-attachments/assets/c7326b95-412a-4ed3-ad9f-97d3d96b0c1b">
 
 
-<img width="1000" alt="스크린샷 2024-10-31 오후 4 56 36" src="https://github.com/user-attachments/assets/ed1ef6cf-96eb-4a46-a9b0-f7ff69fc6c2f">
+<img width="1000" alt="스크린샷 2024-10-31 오후 5 46 10" src="https://github.com/user-attachments/assets/0f99011d-a494-4d9c-8839-70a496e8cb13">
+
 
 
 
 ## 2. ERD
 
-<img width="800" alt="스크린샷 2024-10-31 오후 4 58 00" src="https://github.com/user-attachments/assets/49e021f9-2393-4983-8fca-85c65aa9f5e7">
-
+![ERD](https://github.com/user-attachments/assets/d9dcc768-27a2-46f7-8b5c-7c3dc06ccddd)
 
 
 ## 3. SQL
@@ -21,31 +21,26 @@
 ### 1) 일정 및 작성자 테이블 생성
 
 ```sql
-CREATE TABLE `Schedules` (
-	`id`	bigint	NOT NULL	COMMENT 'Auto Increament',
-	`schedule`	varchar(200)	NULL	COMMENT '일정 내용',
-	`pw`	varchar(40)	NOT NULL	COMMENT '권한 체크용 비밀번호',
-	`enroll_date`	datetime	NOT NULL	COMMENT '최초 일정 작성 날짜 - 자동',
-	`modify_date`	datetime	NOT NULL	COMMENT '가장 최근 일정 내용 수정 날짜 - 자동',
-	`writer_id`	varchar(40)	NOT NULL	COMMENT 'Writer 외래키'
-);
 
 CREATE TABLE `Writers` (
-	`id`	varchar(40)	NOT NULL	COMMENT '작성자 고유의 아이디 - 문자+숫자',
+	`id`	bigint	NOT NULL	PRIMARY KEY	COMMENT 'Auto Increament',
 	`pw`	varchar(40)	NOT NULL	COMMENT '작성자 확인용 비밀번호',
 	`name`	varchar(255)	NOT NULL	COMMENT '일정을 작성한 사람의 이름',
 	`email`	varchar(40)	NULL	COMMENT '일정을 작성한 사람의 E-mail',
 	`add_date`	datetime	NOT NULL	COMMENT '최초 작성자 정보 등록 날짜 - 자동',
 	`modify_date`	datetime	NOT NULL	COMMENT '가장 최근작성자 정보 수정 날짜 - 자동'
 );
-
-ALTER TABLE `Schedules` ADD CONSTRAINT `PK_SCHEDULES` PRIMARY KEY (
-	`id`
+CREATE TABLE `Schedules` (
+	`id`	bigint	NOT NULL	PRIMARY KEY	COMMENT 'Auto Increament',
+	`schedule`	varchar(200)	NULL	COMMENT '일정 내용',
+	`pw`	varchar(40)	NOT NULL	COMMENT '권한 체크용 비밀번호',
+	`enroll_date`	datetime	NOT NULL	COMMENT '최초 일정 작성 날짜 - 자동',
+	`modify_date`	datetime	NOT NULL	COMMENT '가장 최근 일정 내용 수정 날짜 - 자동',
+	`writer_id`	varchar(40)	NOT NULL	COMMENT 'Writer 외래키'
+	FOREIGN KEY (writer_id) REFERENCES Writers(id)
 );
 
-ALTER TABLE `Writers` ADD CONSTRAINT `PK_WRITERS` PRIMARY KEY (
-	`id`
-);
+
 ```
 
 ### 2) 작성자 생성 및 일정 생성
