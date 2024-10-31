@@ -3,16 +3,16 @@
 
 ## 1. API 명세서
 
-<img width="800" alt="스크린샷 2024-10-31 오후 4 53 58" src="https://github.com/user-attachments/assets/86bf1099-de19-4ab4-a915-d92e5bc6c370">
+<img width="1000" alt="스크린샷 2024-10-31 오후 4 53 58" src="https://github.com/user-attachments/assets/86bf1099-de19-4ab4-a915-d92e5bc6c370">
 
 
-<img width="800" alt="스크린샷 2024-10-31 오후 4 56 36" src="https://github.com/user-attachments/assets/ed1ef6cf-96eb-4a46-a9b0-f7ff69fc6c2f">
+<img width="1000" alt="스크린샷 2024-10-31 오후 4 56 36" src="https://github.com/user-attachments/assets/ed1ef6cf-96eb-4a46-a9b0-f7ff69fc6c2f">
 
 
 
 ## 2. ERD
 
-<img width="600" alt="스크린샷 2024-10-31 오후 4 58 00" src="https://github.com/user-attachments/assets/49e021f9-2393-4983-8fca-85c65aa9f5e7">
+<img width="800" alt="스크린샷 2024-10-31 오후 4 58 00" src="https://github.com/user-attachments/assets/49e021f9-2393-4983-8fca-85c65aa9f5e7">
 
 
 
