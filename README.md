@@ -47,11 +47,11 @@ CREATE TABLE `Schedules` (
 ```sql
 -- Insert Writers
 INSERT INTO writer (id, pw, name, email, create_date)
-VALUES ("taketheking", "abcd123", "kim", "sparta@teamsparta.co.kr", 2024-10-29, 2024-10-30);
+VALUES (1, "abcd123", "kim", "sparta@teamsparta.co.kr", 2024-10-29, 2024-10-30);
 
 -- Insert schedules
 INSERT INTO schedule (id, schedule, pw, enroll_date, modify_date, writer_id)
-VALUES (1,"과제하기","abcd123", 2024-10-29, 2024-10-30, "taketheking");
+VALUES (1,"과제하기","abcd123", 2024-10-29, 2024-10-30, 2);
 ```
 
 
