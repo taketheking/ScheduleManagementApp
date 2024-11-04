@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ScheduleRepository {
-    ScheduleResponseDto saveSchedule(String name, String pw, String schedule, LocalDateTime localDateTime);
+    ScheduleResponseDto saveSchedule(String pw, String schedule, LocalDateTime localDateTime, Long writerId);
 
-    List<ScheduleResponseDto> findAllSchedule(String name, String date);
+    List<ScheduleResponseDto> findAllSchedule(Long writerId, String date, Integer page, Integer size);
 
     Schedule findScheduleById(Long id);
 
-    int updateScheduleById(Long id, String name, String schedule, LocalDateTime modifyDate);
+    int updateScheduleById(Long id, String schedule, LocalDateTime modifyDate);
 
     int deleteScheduleById(Long id);
 }

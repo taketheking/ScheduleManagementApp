@@ -32,14 +32,17 @@ public class ScheduleController {
 
     /**
      * 할일 전체 목록 조회 API
-     * @param name 작성자명
+     * @param writerId 작성자명
      * @param date 최종 수정일
      * @return : {@link List<ScheduleResponseDto>} JSON 응답
      */
     @GetMapping
-    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedules(@RequestParam(required = false) String name, @RequestParam(required = false)  String date) {
-
-        return new ResponseEntity<>(scheduleService.findAllSchedule(name, date), HttpStatus.OK);
+    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedules(
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            @RequestParam(required = false) Long writerId,
+            @RequestParam(required = false)  String date) {
+        return new ResponseEntity<>(scheduleService.findAllSchedule(writerId, date, page, size), HttpStatus.OK);
     }
 
     /**
@@ -67,7 +70,7 @@ public class ScheduleController {
     /**
      * 할일 단건 삭제 API
      * @param  id 식별자
-     * @param pw 비밀번호
+     * @param scheduleRequestDto 비밀번호
      * @return : {@link ResponseEntity<Void>} JSON 응답
      */
     @DeleteMapping("/{id}")
