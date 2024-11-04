@@ -66,7 +66,7 @@ public class ScheduleController {
     /**
      * 할일 단건 삭제 API
      * @param  id 식별자
-     * @param pw 비밀번호
+     * @param scheduleRequestDto 비밀번호
      * @return : {@link ResponseEntity<Void>} JSON 응답
      */
     @DeleteMapping("/{id}")
