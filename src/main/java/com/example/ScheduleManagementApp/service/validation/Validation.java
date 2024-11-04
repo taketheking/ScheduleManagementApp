@@ -22,6 +22,13 @@ public class Validation {
         }
     }
 
+    public String ValidateStringEmptyValue(String valueFirst) {
+        if (valueFirst.isBlank()) {
+            return null;
+        }
+        return valueFirst;
+    }
+
     public void ValidateNotFoundId(int row, Long id){
         if (row == 0){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Schedule not found by id: " + id);

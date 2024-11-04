@@ -37,6 +37,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         // 필수 값 검증
 //        validation.ValidateRequiredValues(name, date);
 
+        name = validation.ValidateStringEmptyValue(name);
+        date = validation.ValidateStringEmptyValue(date);
+
         return scheduleRepository.findAllSchedule(name, date);
     }
 
