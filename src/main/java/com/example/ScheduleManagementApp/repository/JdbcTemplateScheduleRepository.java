@@ -26,7 +26,7 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
     }
 
     @Override
-    public ScheduleResponseDto saveSchedule(String name, String pw, String schedule, LocalDateTime localDateTime) {
+    public ScheduleResponseDto saveSchedule(String pw, String schedule, LocalDateTime localDateTime, Long writerId) {
 
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 
@@ -34,48 +34,55 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
 
         Map<String, Object> params = new HashMap<>();
 
-        params.put("name", name);
         params.put("pw", pw);
         params.put("schedule", schedule);
         params.put("enroll_date", localDateTime);
         params.put("modify_date", localDateTime);
+        params.put("writer_id", writerId);
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
 
-        return new ScheduleResponseDto(key.longValue(), name, schedule, localDateTime);
+        return new ScheduleResponseDto(key.longValue(), findWriterNameById(writerId), schedule, localDateTime);
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedule(String name, String date) {
+    public List<ScheduleResponseDto> findAllSchedule(Long writerId, String date, Integer page, Integer size) {
 
-        return jdbcTemplate.query("select * from schedules where (name = ? OR ? IS NULL) AND (DATE_FORMAT(modify_date, '%Y-%m-%d') = ? OR ? IS NULL)",
+        return jdbcTemplate.query("select * from schedules where (writer_id = ? OR ? IS NULL) AND (DATE_FORMAT(modify_date, '%Y-%m-%d') = ? OR ? IS NULL) ORDER BY modify_date DESC LIMIT ? OFFSET ?",
                 (rs, rowNum) ->
-                        new ScheduleResponseDto(rs.getLong("id"), rs.getString("name"), rs.getString("schedule"), rs.getObject("modify_date", LocalDateTime.class)),
-                name, name, date, date);
+                        new ScheduleResponseDto(rs.getLong("id"), findWriterNameById(rs.getLong("writer_id")), rs.getString("schedule"), rs.getObject("modify_date", LocalDateTime.class)),
+                writerId, writerId, date, date, size, (page-1)*size);
     }
 
     @Override
     public Schedule findScheduleById(Long id) {
         return jdbcTemplate.query("select * from schedules where id = ?", (rs, rowNum) -> new Schedule (
                 rs.getLong("id"),
-                rs.getString("name"),
+                findWriterNameById(rs.getLong("writer_id")),
                 rs.getString("pw"),
                 rs.getString("schedule"),
                 rs.getObject("enroll_date", LocalDateTime.class),
-                rs.getObject("modify_date", LocalDateTime.class)
+                rs.getObject("modify_date", LocalDateTime.class),
+                rs.getLong("writer_id")
         ), id).stream().findAny().orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id));
     }
 
 
     @Override
-    public int updateScheduleById(Long id, String name, String schedule, LocalDateTime dateTime) {
-        return jdbcTemplate.update("update schedules set name = ?, schedule = ?, modify_date = ? where id = ?", name, schedule, dateTime, id);
+    public int updateScheduleById(Long id, String schedule, LocalDateTime dateTime) {
+        return jdbcTemplate.update("update schedules set schedule = ?, modify_date = ? where id = ?", schedule, dateTime, id);
     }
 
 
     @Override
     public int deleteScheduleById(Long id) {
         return jdbcTemplate.update("delete from schedules where id = ?", id);
+    }
+
+    public String findWriterNameById(Long writerId) {
+        return jdbcTemplate.query("select * from writers where id = ?", (rs, rowNum) ->
+                        rs.getString("name"), writerId).stream().findFirst()
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + writerId));
     }
 
 }

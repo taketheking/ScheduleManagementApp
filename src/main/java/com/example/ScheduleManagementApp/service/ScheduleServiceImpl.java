@@ -29,18 +29,17 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalDateTime localDateTime = getCurrentTime();
 
         // 데이터베이스에서 일정 생성
-        return scheduleRepository.saveSchedule(requestDto.getName(), requestDto.getPw(), requestDto.getSchedule(), localDateTime);
+        return scheduleRepository.saveSchedule(requestDto.getPw(), requestDto.getSchedule(), localDateTime, requestDto.getWriterId());
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedule(String name, String date) {
+    public List<ScheduleResponseDto> findAllSchedule(Long writerId, String date, Integer page, Integer size) {
         // 필수 값 검증
 //        validation.ValidateRequiredValues(name, date);
 
-        name = validation.ValidateStringEmptyValue(name);
         date = validation.ValidateStringEmptyValue(date);
 
-        return scheduleRepository.findAllSchedule(name, date);
+        return scheduleRepository.findAllSchedule(writerId, date, page, size);
     }
 
     @Override
@@ -58,13 +57,13 @@ public class ScheduleServiceImpl implements ScheduleService {
     public ScheduleResponseDto updateScheduleById(Long id, ScheduleRequestDto scheduleRequestDto) {
 
         // 필수값 검증
-        validation.ValidateRequiredValues(scheduleRequestDto.getName(), scheduleRequestDto.getSchedule());
+        validation.ValidateRequiredValue(scheduleRequestDto.getSchedule());
 
         // pw 확인 검사
         validation.ValidatePw(scheduleRepository, id, scheduleRequestDto.getPw());
 
         // 데이터베이스 일정 수정
-        int updateRow = scheduleRepository.updateScheduleById(id, scheduleRequestDto.getName(), scheduleRequestDto.getSchedule(), getCurrentTime());
+        int updateRow = scheduleRepository.updateScheduleById(id, scheduleRequestDto.getSchedule(), getCurrentTime());
 
         // id 확인 검사
         validation.ValidateNotFoundId(updateRow, id);

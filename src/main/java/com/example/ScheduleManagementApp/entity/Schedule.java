@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,13 +23,6 @@ public class Schedule {
 
     private LocalDateTime modifyDate;
 
-
-    public Schedule(String name, String pw, String schedule, LocalDateTime enrollDate, LocalDateTime modifyDate) {
-        this.name = name;
-        this.pw = pw;
-        this.schedule = schedule;
-        this.enrollDate = enrollDate;
-        this.modifyDate = modifyDate;
-    }
+    private Long writerId;
 
 }

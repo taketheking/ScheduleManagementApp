@@ -15,15 +15,16 @@ public class Validation {
         }
     }
 
-    public void ValidateRequiredValues(String valueFirst, String valueSecond) {
+    public void ValidateRequiredValue(String value) {
         // 필수값 검증
-        if (valueFirst == null || valueSecond == null) {
+        if (value == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name and schedule are required values.");
         }
     }
 
+
     public String ValidateStringEmptyValue(String valueFirst) {
-        if (valueFirst.isBlank()) {
+        if (valueFirst != null && valueFirst.isBlank()) {
             return null;
         }
         return valueFirst;
