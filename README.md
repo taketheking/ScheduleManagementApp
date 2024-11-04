@@ -22,24 +22,26 @@
 
 ```sql
 
-CREATE TABLE `Writers` (
-	`id`	bigint	NOT NULL	PRIMARY KEY	COMMENT 'Auto Increament',
-	`pw`	varchar(40)	NOT NULL	COMMENT '작성자 확인용 비밀번호',
-	`name`	varchar(255)	NOT NULL	COMMENT '일정을 작성한 사람의 이름',
-	`email`	varchar(40)	NULL	COMMENT '일정을 작성한 사람의 E-mail',
-	`add_date`	datetime	NOT NULL	COMMENT '최초 작성자 정보 등록 날짜 - 자동',
-	`modify_date`	datetime	NOT NULL	COMMENT '가장 최근작성자 정보 수정 날짜 - 자동'
-);
-CREATE TABLE `Schedules` (
-	`id`	bigint	NOT NULL	PRIMARY KEY	COMMENT 'Auto Increament',
-	`schedule`	varchar(200)	NULL	COMMENT '일정 내용',
-	`pw`	varchar(40)	NOT NULL	COMMENT '권한 체크용 비밀번호',
-	`enroll_date`	datetime	NOT NULL	COMMENT '최초 일정 작성 날짜 - 자동',
-	`modify_date`	datetime	NOT NULL	COMMENT '가장 최근 일정 내용 수정 날짜 - 자동',
-	`writer_id`	varchar(40)	NOT NULL	COMMENT 'Writer 외래키'
-	FOREIGN KEY (writer_id) REFERENCES Writers(id)
+create table writers
+(
+    `id`	bigint	auto_increment	PRIMARY KEY	COMMENT 'Auto Increament',
+    `pw`	varchar(40)	NOT NULL	COMMENT '작성자 확인용 비밀번호',
+    `name`	varchar(40)	NOT NULL	COMMENT '일정을 작성한 사람의 이름',
+    `email`	varchar(40)	NULL	COMMENT '일정을 작성한 사람의 E-mail',
+    `add_date`	datetime(6)	NOT NULL	COMMENT '최초 작성자 정보 등록 날짜 - 자동',
+    `modify_date`	datetime(6)	NOT NULL	COMMENT '가장 최근작성자 정보 수정 날짜 - 자동'
 );
 
+create table schedules
+(
+    id          bigint auto_increment comment 'Auto Increament'	primary key,
+    schedule    varchar(200) null comment '일정 내용',
+    pw          varchar(40)  not null comment '권한 체크용 비밀번호',
+    enroll_date datetime(6)  not null comment '최초 일정 작성 날짜 - 자동',
+    modify_date datetime(6)  not null comment '가장 최근 일정 내용 수정 날짜 - 자동',
+    writer_id	bigint	NOT NULL	COMMENT 'writers 외래키',
+    FOREIGN KEY (writer_id) REFERENCES writers(id)
+);
 
 ```
 
