@@ -10,7 +10,7 @@ import java.util.Objects;
 @Component
 public class Validation {
     public void ValidatePw(ScheduleRepository scheduleRepository, Long id, String pw){
-        if(!Objects.equals(scheduleRepository.findScheduleById(id).getPw(), pw)){
+        if(!Objects.equals(scheduleRepository.findSchedulePassWordById(id), pw)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong password");
         }
     }

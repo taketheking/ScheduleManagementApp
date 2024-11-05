@@ -1,8 +1,9 @@
 package com.example.ScheduleManagementApp.service;
 
+import com.example.ScheduleManagementApp.dto.ScheduleDeleteRequestDto;
 import com.example.ScheduleManagementApp.dto.ScheduleRequestDto;
 import com.example.ScheduleManagementApp.dto.ScheduleResponseDto;
-import com.example.ScheduleManagementApp.entity.Schedule;
+import com.example.ScheduleManagementApp.dto.ScheduleUpdateRequestDto;
 import com.example.ScheduleManagementApp.repository.ScheduleRepository;
 import com.example.ScheduleManagementApp.service.validation.Validation;
 import org.springframework.stereotype.Service;
@@ -29,57 +30,51 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalDateTime localDateTime = getCurrentTime();
 
         // 데이터베이스에서 일정 생성
-        return scheduleRepository.saveSchedule(requestDto.getPw(), requestDto.getSchedule(), localDateTime, requestDto.getWriterId());
+        return scheduleRepository.saveSchedule(requestDto.getName(), requestDto.getEmail(), requestDto.getPw(), requestDto.getSchedule(), localDateTime);
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedule(Long writerId, String date, Integer page, Integer size) {
+    public List<ScheduleResponseDto> findAllSchedule(String name, String date, Integer page, Integer size) {
         // 필수 값 검증
 //        validation.ValidateRequiredValues(name, date);
 
         date = validation.ValidateStringEmptyValue(date);
 
-        return scheduleRepository.findAllSchedule(writerId, date, page, size);
+        return scheduleRepository.findAllSchedule(name, date, page, size);
     }
 
     @Override
     public ScheduleResponseDto findScheduleById(Long id) {
 
         // 단건 조회하기
-        Schedule schedule = scheduleRepository.findScheduleById(id);
-
-        // response dto 에 담아 전달하기
-        return new ScheduleResponseDto(schedule);
+        return scheduleRepository.findScheduleById(id);
     }
 
     @Transactional
     @Override
-    public ScheduleResponseDto updateScheduleById(Long id, ScheduleRequestDto scheduleRequestDto) {
+    public ScheduleResponseDto updateScheduleById(Long id, ScheduleUpdateRequestDto scheduleUpdateRequestDto) {
 
         // 필수값 검증
-        validation.ValidateRequiredValue(scheduleRequestDto.getSchedule());
+        validation.ValidateRequiredValue(scheduleUpdateRequestDto.getSchedule());
 
         // pw 확인 검사
-        validation.ValidatePw(scheduleRepository, id, scheduleRequestDto.getPw());
+        validation.ValidatePw(scheduleRepository, id, scheduleUpdateRequestDto.getPw());
 
         // 데이터베이스 일정 수정
-        int updateRow = scheduleRepository.updateScheduleById(id, scheduleRequestDto.getSchedule(), getCurrentTime());
+        int updateRow = scheduleRepository.updateScheduleById(id, scheduleUpdateRequestDto.getName(), scheduleUpdateRequestDto.getSchedule(), getCurrentTime());
 
         // id 확인 검사
         validation.ValidateNotFoundId(updateRow, id);
 
         // 수정한 데이터 가져오기
-        Schedule schedule = scheduleRepository.findScheduleById(id);
-
-        // response dto 에 담아 전달하기
-        return new ScheduleResponseDto(schedule);
+        return scheduleRepository.findScheduleById(id);
 
     }
 
     @Override
-    public void deleteScheduleById(Long id, ScheduleRequestDto scheduleRequestDto) {
+    public void deleteScheduleById(Long id, ScheduleDeleteRequestDto scheduleDeleteRequestDto) {
         // pw 확인 검사
-        validation.ValidatePw(scheduleRepository, id, scheduleRequestDto.getPw());
+        validation.ValidatePw(scheduleRepository, id, scheduleDeleteRequestDto.getPw());
 
         // 데이터베이스에서 일정 삭제
         int deleteRow = scheduleRepository.deleteScheduleById(id);

@@ -1,6 +1,5 @@
 package com.example.ScheduleManagementApp.dto;
 
-import com.example.ScheduleManagementApp.entity.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,14 +17,4 @@ public class ScheduleResponseDto {
 
     LocalDateTime modifyDate;
 
-
-    public ScheduleResponseDto(Schedule schedule) {
-        this.id = schedule.getId();
-
-        this.name = schedule.getName();
-
-        this.schedule = schedule.getSchedule();
-
-        this.modifyDate = schedule.getModifyDate();
-    }
 }
