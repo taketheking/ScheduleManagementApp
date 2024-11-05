@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ScheduleResponseDto {
 
-    Long id;
+    private Long id;
 
-    String name;
+    private String name;
 
-    String schedule;
+    private String schedule;
 
-    LocalDateTime modifyDate;
+    private LocalDateTime modifyDate;
 
 }

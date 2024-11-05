@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 
 @Getter
-public class ScheduleRequestDto {
+public class ScheduleCreateRequestDto {
 
     @NotBlank
     @Size(min = 1, max = 40)
@@ -19,7 +19,7 @@ public class ScheduleRequestDto {
     @Size(min = 4, max = 40)
     String pw;
 
-    @NotNull
+    @NotEmpty
     @Size(max = 200)
     String schedule;
 

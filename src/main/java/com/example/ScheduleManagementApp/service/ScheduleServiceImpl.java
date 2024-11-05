@@ -1,11 +1,11 @@
 package com.example.ScheduleManagementApp.service;
 
 import com.example.ScheduleManagementApp.dto.ScheduleDeleteRequestDto;
-import com.example.ScheduleManagementApp.dto.ScheduleRequestDto;
+import com.example.ScheduleManagementApp.dto.ScheduleCreateRequestDto;
 import com.example.ScheduleManagementApp.dto.ScheduleResponseDto;
 import com.example.ScheduleManagementApp.dto.ScheduleUpdateRequestDto;
 import com.example.ScheduleManagementApp.repository.ScheduleRepository;
-import com.example.ScheduleManagementApp.service.validation.Validation;
+import com.example.ScheduleManagementApp.validation.Validation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public ScheduleResponseDto createSchedule(ScheduleRequestDto requestDto) {
+    public ScheduleResponseDto createSchedule(ScheduleCreateRequestDto requestDto) {
         // 일정 생성 시점 가져오기
         LocalDateTime localDateTime = getCurrentTime();
 
@@ -35,11 +35,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<ScheduleResponseDto> findAllSchedule(String name, String date, Integer page, Integer size) {
-        // 필수 값 검증
-//        validation.ValidateRequiredValues(name, date);
 
-        date = validation.ValidateStringEmptyValue(date);
-
+        // 전체 조회하기
         return scheduleRepository.findAllSchedule(name, date, page, size);
     }
 
@@ -53,9 +50,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     @Override
     public ScheduleResponseDto updateScheduleById(Long id, ScheduleUpdateRequestDto scheduleUpdateRequestDto) {
-
-        // 필수값 검증
-        validation.ValidateRequiredValue(scheduleUpdateRequestDto.getSchedule());
 
         // pw 확인 검사
         validation.ValidatePw(scheduleRepository, id, scheduleUpdateRequestDto.getPw());
@@ -71,6 +65,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     }
 
+    @Transactional
     @Override
     public void deleteScheduleById(Long id, ScheduleDeleteRequestDto scheduleDeleteRequestDto) {
         // pw 확인 검사
@@ -83,9 +78,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         validation.ValidateNotFoundId(deleteRow, id);
     }
 
-
     public LocalDateTime getCurrentTime(){
 
         return LocalDateTime.now(ZoneId.of("Asia/Seoul")).withNano(0);
     }
+
+
 }

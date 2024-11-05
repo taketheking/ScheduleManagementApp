@@ -1,7 +1,7 @@
 package com.example.ScheduleManagementApp.controller;
 
 import com.example.ScheduleManagementApp.dto.ScheduleDeleteRequestDto;
-import com.example.ScheduleManagementApp.dto.ScheduleRequestDto;
+import com.example.ScheduleManagementApp.dto.ScheduleCreateRequestDto;
 import com.example.ScheduleManagementApp.dto.ScheduleResponseDto;
 import com.example.ScheduleManagementApp.dto.ScheduleUpdateRequestDto;
 import com.example.ScheduleManagementApp.service.ScheduleService;
@@ -24,22 +24,25 @@ public class ScheduleController {
 
     /**
      * 할일 생성 API
-     * @param scheduleRequestDto : {@link ScheduleRequestDto} 할일 생성 요청 객체
+     * @param scheduleCreateRequestDto : {@link ScheduleCreateRequestDto} 할일 생성 요청 객체
      * @return : {@link ResponseEntity<ScheduleResponseDto>} JSON 응답
      */
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody @Valid ScheduleRequestDto scheduleRequestDto) {
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody @Valid ScheduleCreateRequestDto scheduleCreateRequestDto) {
 
-        return new ResponseEntity<>(scheduleService.createSchedule(scheduleRequestDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(scheduleService.createSchedule(scheduleCreateRequestDto), HttpStatus.CREATED);
     }
 
     /**
      * 할일 전체 목록 조회 API
      * @param name 작성자명
      * @param date 최종 수정일
+     * @param page 현재 페이지
+     * @param size 한 페이지 당 일정 개수
      * @return : {@link List<ScheduleResponseDto>} JSON 응답
      */
     @GetMapping
+
     public ResponseEntity<List<ScheduleResponseDto>> findAllSchedules(
             @RequestParam(required = false, defaultValue = "1") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,
@@ -62,7 +65,7 @@ public class ScheduleController {
     /**
      * 할일 단건 전체 수정 API
      * @param  id 식별자
-     * @param scheduleUpdateRequestDto {@link ScheduleRequestDto} 할일 생성 요청 객체
+     * @param scheduleUpdateRequestDto {@link ScheduleCreateRequestDto} 할일 생성 요청 객체
      * @return : {@link ResponseEntity<ScheduleResponseDto>} JSON 응답
      */
     @PutMapping("/{id}")

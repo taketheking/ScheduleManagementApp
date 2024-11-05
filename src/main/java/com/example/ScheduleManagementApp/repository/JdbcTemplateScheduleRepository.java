@@ -1,12 +1,12 @@
 package com.example.ScheduleManagementApp.repository;
 
 import com.example.ScheduleManagementApp.dto.ScheduleResponseDto;
-import org.springframework.http.HttpStatus;
+import com.example.ScheduleManagementApp.exception.NotExistIdException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
@@ -57,6 +57,7 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
         return jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
     }
 
+    @Transactional
     @Override
     public ScheduleResponseDto saveSchedule(String name, String email, String pw, String schedule, LocalDateTime createDateTime) {
 
@@ -88,14 +89,14 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
                 rs.getString("name"),
                 rs.getString("schedule"),
                 rs.getObject("modify_date", LocalDateTime.class)
-        ), id).stream().findAny().orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id));
+        ), id).stream().findAny().orElseThrow(()-> new NotExistIdException("[id = " + id + "] 에 해당하는 정보가 존재하지 않습니다."));
     }
 
     @Override
     public String findSchedulePassWordById(Long id) {
         return jdbcTemplate.query("select pw from schedules where id = ?",
                 (rs, rowNum) -> rs.getString("pw")
-                , id).stream().findAny().orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id));
+                , id).stream().findAny().orElseThrow(()-> new NotExistIdException("[id = " + id + "] 에 해당하는 정보가 존재하지 않습니다."));
 
     }
 
