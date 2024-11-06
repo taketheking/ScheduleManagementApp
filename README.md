@@ -105,10 +105,605 @@ RDBMS : MYSQL_Server 9.1.0
 
 ## 2. API 명세서
 
-<img width="1000" alt="스크린샷 2024-10-31 오후 5 45 59" src="https://github.com/user-attachments/assets/c7326b95-412a-4ed3-ad9f-97d3d96b0c1b">
+<table>
+    <tr>
+      <th scope="col">기능</td>
+      <th scope="col">Method</td>
+      <th scope="col">URL</th>
+      <th scope="col">Request</td>
+      <th scope="col">Response</td>
+      <th scope="col">상태코드</td>
+    </tr>
+    <tr>
+      <td>일정 생성</td>
+      <td>POST</td>
+      <td>/api/schdules</td>
+      <td>요청 body</td>
+      <td>등록된 데이터 정보</td>
+      <td>200: 정상 등록, 400: 잘못된 값 입력</td>
+    </tr>
+    <tr>
+      <td>전체 일정 조회</td>
+      <td>GET</td>
+      <td>/api/schdules</td>
+      <td>요청 params</td>
+      <td>조건에 맞는 데이터 정보들</td>
+      <td>200: 정상 등록, 400: 잘못된 값 입력</td>
+    </tr>
+    <tr>
+      <td>단건 일정 조회</td>
+      <td>GET</td>
+      <td>/api/schdules/{id}</td>
+      <td>요청 param</td>
+      <td>요청한 데이터 정보</td>
+      <td>200: 정상 등록, 404: 해당 데이터 존재하지 않음</td>
+    </tr>
+    <tr>
+      <td>단건 일정 수정</td>
+      <td>POST</td>
+      <td>/api/schdules/{id}</td>
+      <td>요청 param, 요청 body</td>
+      <td>수정된 데이터 정보</td>
+      <td>200: 정상 등록, 400: 잘못된 값 입력, 404: 해당 데이터 존재하지 않음</td>
+    </tr>
+    <tr>
+      <td>단건 일정 삭제</td>
+      <td>Delete</td>
+      <td>/api/schdules/{id}</td>
+      <td>요청 param, 요청 body</td>
+      <td>없음</td>
+      <td>200: 정상 등록, 400: 잘못된 값 입력, 404: 해당 데이터 존재하지 않음</td>
+    </tr>
+  </table>
 
 
-<img width="1000" alt="스크린샷 2024-10-31 오후 5 46 10" src="https://github.com/user-attachments/assets/0f99011d-a494-4d9c-8839-70a496e8cb13">
+
+<details>
+<summary>일정 생성</summary>
+  
+ - 설명 : 일정을 하나 생성합니다.
+  
+ - 기본 정보
+ <table>
+    <tr>
+      <th scope="col">메소드</td>
+      <th scope="col">URL</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>localhost:8080/schdules</td>
+    </tr>
+  </table>
+
+ - 예제
+   - **요청** : JSON
+    ```
+      {
+      "name" : "박스파르타",
+      "email" : "sparta@teamsparta.com",
+      "pw" : "1234",
+      "schedule" : "숙제하기"
+      }
+    ```
+   - **응답**
+     
+   HTTP/1.1 201 Created
+   ```
+     {
+      "id": 37,
+      "name": "박스파르타",
+      "schedule": "숙제하기",
+      "modifyDate": "2024-11-06T17:01:00"
+      }
+    ```
+
+ - 본문
+   - **요청**
+   <table>
+    <tr>
+      <th scope="col">이름(컬럼)</td>
+      <th scope="col">타입</td>
+      <th scope="col">필수(Nullable)</td>
+      <th scope="col">설명</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>O</td>
+      <td>작성자명</td>
+    </tr>
+     <tr>
+      <td>email</td>
+      <td>String</td>
+      <td>O</td>
+      <td>작성자 email</td>
+    </tr>
+     <tr>
+      <td>pw</td>
+      <td>String</td>
+      <td>O</td>
+      <td>비밀번호</td>
+    </tr>
+    <tr>
+      <td>schedule</td>
+      <td>String</td>
+      <td>O</td>
+      <td>일정 내용</td>
+    </tr>
+  </table>
+  
+   - **응답**
+  <table>
+    <tr>
+      <th scope="col">이름(컬럼)</td>
+      <th scope="col">타입</td>
+      <th scope="col">필수(Nullable)</td>
+      <th scope="col">설명</td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Long</td>
+      <td>O</td>
+      <td>일정 테이블의 고유 식별자 아이디</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>O</td>
+      <td>작성자명</td>
+    </tr>
+    <tr>
+      <td>schedule</td>
+      <td>String</td>
+      <td>O</td>
+      <td>일정 내용</td>
+    </tr>
+    <tr>
+      <td>modifyDate</td>
+      <td>DateTime</td>
+      <td>O</td>
+      <td>최종 수정일</td>
+    </tr>
+  </table>
+</details>
+
+<details>
+<summary>전체 일정 조회</summary>
+  
+ - 설명 : 조건에 맞는 일정을 모두 조회합니다.
+  
+ - 기본 정보
+ <table>
+    <tr>
+      <th scope="col">메소드</td>
+      <th scope="col">URL</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>localhost:8080/schdules</td>
+    </tr>
+  </table>
+
+ - 예제
+   - **요청** : QueryParams
+    ```
+    {
+      ?name=&date=2024-11-06&page=1&size=10
+    }
+    ```
+   - **응답**
+     
+   HTTP/1.1 200 OK
+   ```
+     [
+    {
+        "id": 36,
+        "name": "박스파르타",
+        "schedule": "숙제하기",
+        "modifyDate": "2024-11-06T15:25:11"
+    },
+    {
+        "id": 35,
+        "name": "김아무개",
+        "schedule": "상담하기",
+        "modifyDate": "2024-11-06T15:24:44"
+    },
+    {
+        "id": 34,
+        "name": "홍길동",
+        "schedule": "공부하기",
+        "modifyDate": "2024-11-06T15:21:04"
+    }
+]
+    ```
+
+ - 본문
+   - **요청** : Query Params
+   <table>
+    <tr>
+      <th scope="col">키 이름</td>
+      <th scope="col">타입</td>
+      <th scope="col">필수(Nullable)</td>
+      <th scope="col">기본값</td>
+      <th scope="col">설명</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>X</td>
+      <td></td>
+      <td>작성자명</td>
+    </tr>
+     <tr>
+      <td>date</td>
+      <td>String</td>
+      <td>X</td>
+       <td></td>
+      <td>수정일</td>
+    </tr>
+     <tr>
+      <td>page</td>
+      <td>int</td>
+      <td>X</td>
+       <td>1</td>
+      <td>현재 페이지</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td>int</td>
+      <td>X</td>
+      <td>10</td>
+      <td>한 페이지 내의 일정 개수</td>
+    </tr>
+  </table>
+  
+   - **응답** : List
+  <table>
+    <tr>
+      <th scope="col">이름(컬럼)</td>
+      <th scope="col">타입</td>
+      <th scope="col">필수(Nullable)</td>
+      <th scope="col">설명</td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Long</td>
+      <td>O</td>
+      <td>일정 테이블의 고유 식별자 아이디</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>O</td>
+      <td>작성자명</td>
+    </tr>
+    <tr>
+      <td>schedule</td>
+      <td>String</td>
+      <td>O</td>
+      <td>일정 내용</td>
+    </tr>
+    <tr>
+      <td>modifyDate</td>
+      <td>DateTime</td>
+      <td>O</td>
+      <td>최종 수정일</td>
+    </tr>
+  </table>
+</details>
+
+<details>
+<summary>선택 일정 조회</summary>
+   
+ - 설명 : 일정을 하나 조회합니다.
+  
+ - 기본 정보
+ <table>
+    <tr>
+      <th scope="col">메소드</td>
+      <th scope="col">URL</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>localhost:8080/schdules/{id}</td>
+    </tr>
+  </table>
+
+ - 예제
+   - **요청** : PathVariable
+    ```
+      {
+        34
+      }
+    ```
+   - **응답**
+     
+   HTTP/1.1 200 OK
+   ```
+     {
+    "id": 34,
+    "name": "홍길동",
+    "schedule": "공부하기",
+    "modifyDate": "2024-11-06T15:21:04"
+    }
+    ```
+
+ - 본문
+   - **요청** : PathVariable
+   <table>
+    <tr>
+      <th scope="col">이름(컬럼)</td>
+      <th scope="col">타입</td>
+      <th scope="col">필수(Nullable)</td>
+      <th scope="col">설명</td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Long</td>
+      <td>O</td>
+      <td>일정 고유 식별자 ID</td>
+    </tr>
+  </table>
+  
+   - **응답**
+  <table>
+    <tr>
+      <th scope="col">이름(컬럼)</td>
+      <th scope="col">타입</td>
+      <th scope="col">필수(Nullable)</td>
+      <th scope="col">설명</td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Long</td>
+      <td>O</td>
+      <td>일정 테이블의 고유 식별자 아이디</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>O</td>
+      <td>작성자명</td>
+    </tr>
+    <tr>
+      <td>schedule</td>
+      <td>String</td>
+      <td>O</td>
+      <td>일정 내용</td>
+    </tr>
+    <tr>
+      <td>modifyDate</td>
+      <td>DateTime</td>
+      <td>O</td>
+      <td>최종 수정일</td>
+    </tr>
+  </table>
+</details>
+
+<details>
+<summary>선택 일정 수정</summary>
+
+ - 설명 : 일정을 하나 수정합니다.
+
+ - 기본 정보
+ <table>
+    <tr>
+      <th scope="col">메소드</td>
+      <th scope="col">URL</td>
+    </tr>
+    <tr>
+      <td>PATCH</td>
+      <td>localhost:8080/schdules/{id}</td>
+    </tr>
+  </table>
+
+ - 예제
+   - **요청** : PathVariable + JSON
+    ```
+    // PathVariable
+    {
+      34
+    }
+
+    // requestBody 내의 JSON
+    {
+      "name" : "스파르타",
+      "schedule" : "상담말고 산책하기",
+      "pw" : "1234"
+    }
+    ```
+   - **응답**
+     
+   HTTP/1.1 200 OK
+   ```
+     {
+      "id": 34,
+      "name": "스파르타",
+      "schedule": "상담말고 산책하기",
+      "modifyDate": "2024-11-06T17:38:32"
+    }
+    ```
+
+ - 본문
+   - **요청** : PathVariable + JSON
+   <table>
+    <tr>
+      <th scope="col">이름(컬럼)</td>
+      <th scope="col">타입</td>
+      <th scope="col">필수(Nullable)</td>
+      <th scope="col">설명</td>
+      <th scope="col">전달 방법</td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Long</td>
+      <td>O</td>
+      <td>일정 고유 식별자 ID</td>
+      <td>PathVariable</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>O</td>
+      <td>수정할 작성자명</td>
+      <td>JSON</td>
+    </tr>
+    <tr>
+      <td>schedule</td>
+      <td>String</td>
+      <td>O</td>
+      <td>수정할 일정 내용</td>
+      <td>JSON</td>
+    </tr>
+    <tr>
+      <td>pw</td>
+      <td>String</td>
+      <td>O</td>
+      <td>비밀번호</td>
+      <td>JSON</td>
+    </tr>
+  </table>
+  
+   - **응답**
+  <table>
+    <tr>
+      <th scope="col">이름(컬럼)</td>
+      <th scope="col">타입</td>
+      <th scope="col">필수(Nullable)</td>
+      <th scope="col">설명</td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Long</td>
+      <td>O</td>
+      <td>일정 테이블의 고유 식별자 아이디</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>O</td>
+      <td>작성자명</td>
+    </tr>
+    <tr>
+      <td>schedule</td>
+      <td>String</td>
+      <td>O</td>
+      <td>일정 내용</td>
+    </tr>
+    <tr>
+      <td>modifyDate</td>
+      <td>DateTime</td>
+      <td>O</td>
+      <td>최종 수정일</td>
+    </tr>
+  </table>
+</details>
+
+<details>
+<summary>선택 일정 삭제</summary>
+
+ - 설명 : 일정을 하나 삭제합니다.
+
+ - 기본 정보
+   
+  |메소드|URL|
+  |:---|:---:|
+  |DELETE|localhost:8080/schdules/{id}|
+
+ - 예제
+   - **요청** : PathVariable + JSON
+    ```
+    // PathVariable
+    {
+      34
+    }
+
+    ```
+   - **응답**
+     
+   HTTP/1.1 200 OK
+   ```
+     {}
+   ```
+- 본문
+   - **요청** : PathVariable + JSON
+   <table>
+    <tr>
+      <th scope="col">이름(컬럼)</td>
+      <th scope="col">타입</td>
+      <th scope="col">필수(Nullable)</td>
+      <th scope="col">설명</td>
+      <th scope="col">전달 방법</td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Long</td>
+      <td>O</td>
+      <td>일정 고유 식별자 ID</td>
+      <td>PathVariable</td>
+    </tr>
+    <tr>
+      <td>pw</td>
+      <td>String</td>
+      <td>O</td>
+      <td>비밀번호</td>
+      <td>JSON</td>
+    </tr>
+  </table>
+  
+   - **응답**
+  없음
+</details>
+
+<details>
+<summary>요청 실패</summary>
+
+  - 설명 : 요청에 실패 했을 때
+  - 요청 : 어떤 요청이든 발생 가능함
+    
+  - 예제 응답
+    ```
+    {
+      "dateTime": "2024-11-06T17:49:38.0225623",
+      "httpStatus": "NOT_FOUND",
+      "statusCode": 404,
+      "errors": {
+          "error": "[id = 34] 에 해당하는 정보가 존재하지 않습니다."
+      }
+    }
+    ```
+    ```
+    {
+      "dateTime": "2024-11-06T17:59:23.9190301",
+      "httpStatus": "BAD_REQUEST",
+      "statusCode": 400,
+      "errors": {
+          "errors": "잘못된 비밀번호입니다."
+      }
+    }
+    ```
+    ```
+    {
+      "dateTime": "2024-11-06T17:18:32.5251222",
+      "httpStatus": "BAD_REQUEST",
+      "statusCode": 400,
+      "errors": {
+          "schedule": "비어 있을 수 없습니다"
+      }
+    }
+    ```
+
+
+  - 본문 응답
+
+  |이름|타입|필수|설명|
+|:---|---:|:---:|-----|
+|dateTime|datetime|O|오류가 발생한 시각|
+|httpStatus|String|O|http 상태|
+|statusCode|int|O|http 상태 코드|
+|errors|List<Map<String, String>>|O|오류 내용들|
+
+</details>
 
 
 ## 3. ERD
@@ -126,7 +721,7 @@ CREATE TABLE writers
 (
     id          bigint	auto_increment	PRIMARY KEY	COMMENT 'Auto Increament',
     name	    varchar(40)	NOT NULL	COMMENT '일정을 작성한 사람의 이름',
-    email	    varchar(40)	NOT NULL	COMMENT '일정을 작성한 사람의 E-mail',
+    email	    varchar(40)	NOT NULL  UNIQUE	COMMENT '일정을 작성한 사람의 E-mail',
     enroll_date	datetime(6)	NOT NULL	COMMENT '최초 작성자 정보 등록 날짜 - 자동',
     modify_date	datetime(6)	NOT NULL	COMMENT '가장 최근작성자 정보 수정 날짜 - 자동'
 );
@@ -217,6 +812,12 @@ DELETE FROM schedules WHERE id = 1;
 
 
 - 에러
+
+![error1](https://github.com/user-attachments/assets/fd787eb8-d84e-49d1-91e7-124348ce60d2)
+![error2](https://github.com/user-attachments/assets/11a1bf94-c02c-4b57-a385-bcf755a1f11d)
+![error3](https://github.com/user-attachments/assets/c85aaf3f-a604-4c88-b75b-b03f46dde4ed)
+![error4](https://github.com/user-attachments/assets/00baca7b-3c84-400d-8878-1f9223d59935)
+![error5](https://github.com/user-attachments/assets/e5ff89f8-2753-4066-9e2b-89a1fff3fdeb)
 
   
 
