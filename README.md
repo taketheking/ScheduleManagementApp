@@ -140,7 +140,7 @@ RDBMS : MYSQL_Server 9.1.0
     </tr>
     <tr>
       <td>단건 일정 수정</td>
-      <td>POST</td>
+      <td>PATCH</td>
       <td>/api/schdules/{id}</td>
       <td>요청 param, 요청 body</td>
       <td>수정된 데이터 정보</td>
