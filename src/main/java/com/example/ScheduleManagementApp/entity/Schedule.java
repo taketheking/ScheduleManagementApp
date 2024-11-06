@@ -26,4 +26,11 @@ public class Schedule {
     private Long writerId;
 
 
+    public Schedule(long id, String pw, String schedule, LocalDateTime createDateTime) {
+        this.id = id;
+        this.pw = pw;
+        this.schedule = schedule;
+        this.enrollDate = createDateTime;
+        this.modifyDate = createDateTime;
+    }
 }

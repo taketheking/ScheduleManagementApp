@@ -70,7 +70,7 @@ public class ScheduleController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id, @RequestBody @Valid ScheduleUpdateRequestDto scheduleUpdateRequestDto) {
-        return new ResponseEntity<>(scheduleService.updateScheduleById(id, scheduleUpdateRequestDto), HttpStatus.OK);
+        return new ResponseEntity<>(scheduleService.updateScheduleAndWriterById(id, scheduleUpdateRequestDto), HttpStatus.OK);
     }
 
     /**
