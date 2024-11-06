@@ -1,29 +1,20 @@
-package com.example.ScheduleManagementApp.entity;
+package com.example.ScheduleManagementApp.schedules.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
-public class Schedule {
+public class ScheduleResponseDto {
 
     private Long id;
 
     private String name;
 
-    private String pw;
-
     private String schedule;
 
-    private LocalDateTime enrollDate;
-
     private LocalDateTime modifyDate;
-
-    private Long writerId;
-
 
 }

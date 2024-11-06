@@ -1,10 +1,10 @@
-package com.example.ScheduleManagementApp.service;
+package com.example.ScheduleManagementApp.schedules.service;
 
-import com.example.ScheduleManagementApp.dto.ScheduleDeleteRequestDto;
-import com.example.ScheduleManagementApp.dto.ScheduleCreateRequestDto;
-import com.example.ScheduleManagementApp.dto.ScheduleResponseDto;
-import com.example.ScheduleManagementApp.dto.ScheduleUpdateRequestDto;
-import com.example.ScheduleManagementApp.repository.ScheduleRepository;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleDeleteRequestDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleCreateRequestDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleResponseDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleUpdateRequestDto;
+import com.example.ScheduleManagementApp.schedules.repository.ScheduleRepository;
 import com.example.ScheduleManagementApp.validation.Validation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalDateTime localDateTime = getCurrentTime();
 
         // 데이터베이스에서 일정 생성
-        return scheduleRepository.saveSchedule(requestDto.getName(), requestDto.getEmail(), requestDto.getPw(), requestDto.getSchedule(), localDateTime);
+        return scheduleRepository.saveSchedule(requestDto.getName(), requestDto.getPw(), requestDto.getSchedule(), localDateTime);
     }
 
     @Override

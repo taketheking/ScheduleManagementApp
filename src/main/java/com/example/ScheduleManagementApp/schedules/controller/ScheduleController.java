@@ -1,10 +1,10 @@
-package com.example.ScheduleManagementApp.controller;
+package com.example.ScheduleManagementApp.schedules.controller;
 
-import com.example.ScheduleManagementApp.dto.ScheduleDeleteRequestDto;
-import com.example.ScheduleManagementApp.dto.ScheduleCreateRequestDto;
-import com.example.ScheduleManagementApp.dto.ScheduleResponseDto;
-import com.example.ScheduleManagementApp.dto.ScheduleUpdateRequestDto;
-import com.example.ScheduleManagementApp.service.ScheduleService;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleDeleteRequestDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleCreateRequestDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleResponseDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleUpdateRequestDto;
+import com.example.ScheduleManagementApp.schedules.service.ScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

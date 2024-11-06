@@ -1,6 +1,6 @@
-package com.example.ScheduleManagementApp.repository;
+package com.example.ScheduleManagementApp.schedules.repository;
 
-import com.example.ScheduleManagementApp.dto.ScheduleResponseDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleResponseDto;
 import com.example.ScheduleManagementApp.exception.NotExistIdException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -24,27 +24,14 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public Number JdbcInsertWriter(String name, String email, LocalDateTime createDateTime){
 
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+    @Transactional
+    @Override
+    public ScheduleResponseDto saveSchedule(String name, String pw, String schedule, LocalDateTime createDateTime) {
 
-        jdbcInsert.withTableName("writers").usingGeneratedKeyColumns("id");
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 
-        Map<String, Object> paramsWriter = new HashMap<>();
-
-        paramsWriter.put("name", name);
-        paramsWriter.put("email", email);
-        paramsWriter.put("enroll_date", createDateTime);
-        paramsWriter.put("modify_date", createDateTime);
-
-        return jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(paramsWriter));
-    }
-
-    public Number JdbcInsertSchedule(String pw, String schedule, LocalDateTime createDateTime, Long writerId){
-
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-
-        jdbcInsert.withTableName("schedules").usingGeneratedKeyColumns("id");
+        simpleJdbcInsert.withTableName("schedules").usingGeneratedKeyColumns("id");
 
         Map<String, Object> params = new HashMap<>();
 
@@ -52,20 +39,8 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
         params.put("schedule", schedule);
         params.put("enroll_date", createDateTime);
         params.put("modify_date", createDateTime);
-        params.put("writer_id", writerId);
 
-        return jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
-    }
-
-    @Transactional
-    @Override
-    public ScheduleResponseDto saveSchedule(String name, String email, String pw, String schedule, LocalDateTime createDateTime) {
-
-        // writer 저장
-        Number writerId = JdbcInsertWriter(name, email, createDateTime);
-
-        // schedule 저장
-        Number scheduleId = JdbcInsertSchedule(pw, schedule, createDateTime, writerId.longValue());
+        Number scheduleId = simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
 
         return new ScheduleResponseDto(scheduleId.longValue(), name, schedule, createDateTime);
     }
@@ -91,6 +66,12 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
                 rs.getObject("modify_date", LocalDateTime.class)
         ), id).stream().findAny().orElseThrow(()-> new NotExistIdException("[id = " + id + "] 에 해당하는 정보가 존재하지 않습니다."));
     }
+
+    @Override
+    public Integer findScheduleByNameAndEmail(String name, String email) {
+        return jdbcTemplate.queryForObject("select count(*) from schedules where name = ? and email = ?",Integer.class, name, email);
+    }
+
 
     @Override
     public String findSchedulePassWordById(Long id) {

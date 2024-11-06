@@ -1,10 +1,10 @@
-package com.example.ScheduleManagementApp.service;
+package com.example.ScheduleManagementApp.schedules.service;
 
 
-import com.example.ScheduleManagementApp.dto.ScheduleDeleteRequestDto;
-import com.example.ScheduleManagementApp.dto.ScheduleCreateRequestDto;
-import com.example.ScheduleManagementApp.dto.ScheduleResponseDto;
-import com.example.ScheduleManagementApp.dto.ScheduleUpdateRequestDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleDeleteRequestDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleCreateRequestDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleResponseDto;
+import com.example.ScheduleManagementApp.schedules.dto.ScheduleUpdateRequestDto;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.example.ScheduleManagementApp.validation;
 
 import com.example.ScheduleManagementApp.exception.NotExistIdException;
 import com.example.ScheduleManagementApp.exception.NotMatchPwException;
-import com.example.ScheduleManagementApp.repository.ScheduleRepository;
+import com.example.ScheduleManagementApp.schedules.repository.ScheduleRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -19,5 +19,9 @@ public class Validation {
         if (row == 0){
             throw new NotExistIdException("[id = " + id + "] 에 해당하는 정보가 존재하지 않습니다.");
         }
+    }
+
+    public Boolean ValidateExistWriter(ScheduleRepository scheduleRepository, String name, String email){
+        return scheduleRepository.findScheduleByNameAndEmail(name, email) != 0;
     }
 }
