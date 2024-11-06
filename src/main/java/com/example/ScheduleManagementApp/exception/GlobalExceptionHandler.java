@@ -55,8 +55,8 @@ public class GlobalExceptionHandler {
     }
 
     // 잘못된 id 접근 예외처리
-    @ExceptionHandler(NotExistIdException.class)
-    public ResponseEntity<Object> handleIdNotExist(NotExistIdException ex) {
+    @ExceptionHandler({NotExistIdException.class, ValueNullException.class})
+    public ResponseEntity<Object> handleIdNotExist(Exception ex) {
         // 오류 메세지 저장
         Map<String, String> errors = new HashMap<>();
         errors.put("error", ex.getMessage());
@@ -64,16 +64,16 @@ public class GlobalExceptionHandler {
         // 에러 응답 생성
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), errors);
 
-        log.error("[NotExistIdException]: {}", exceptionResponse.getErrors());
+        log.error("[ {} ] - NOT_FOUND : {}", ex.getClass(), exceptionResponse.getErrors());
 
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
     // pw 불일치 예외처리
     // path Variable 변수의 타입과 다른 타입 값을 넣었을 때 예외처리
     // 그 외의 모든 예외처리
-    @ExceptionHandler({NotMatchPwException.class, MethodArgumentTypeMismatchException.class, Exception.class})
-    public ResponseEntity<Object> handleNotMatchPw(NotMatchPwException ex) {
+    @ExceptionHandler({NotMatchPwException.class, MethodArgumentTypeMismatchException.class, InputZeroException.class})
+    public ResponseEntity<Object> handleNotMatchPw(Exception ex) {
         // 오류 메세지 저장
         Map<String, String> errors = new HashMap<>();
         errors.put("errors", ex.getMessage());
@@ -81,9 +81,10 @@ public class GlobalExceptionHandler {
         // 에러 응답 생성
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), errors);
 
-        log.error("[ {} ]: {}", ex.getClass(), exceptionResponse.getErrors());
+        log.error("[ {} ] - BAD_REQUEST : {}", ex.getClass(), exceptionResponse.getErrors());
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
+
 
 }

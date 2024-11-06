@@ -76,12 +76,14 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
 
     @Override
     public Long getWriterIdByScheduleId(Long id){
-        return jdbcTemplate.queryForObject("select writer_id from schedules where id = ?", Long.class, id);
+        return jdbcTemplate.query("select writer_id from schedules where id = ?", (rs, num) -> rs.getLong("writer_id"), id).stream()
+                .findAny().orElse(null);
     }
 
     @Override
     public int updateScheduleById(Long id, String name, String schedule, LocalDateTime modifyDateTime) {
         return jdbcTemplate.update("update schedules set schedule = ?, modify_date = ? where id = ?", schedule, modifyDateTime, id);
+
     }
 
 

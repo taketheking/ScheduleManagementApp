@@ -52,6 +52,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public List<ScheduleResponseDto> findAllSchedule(String name, String date, Integer page, Integer size) {
 
+        // 페이지네이션 0값 체크 - 예외처리
+        validation.ValidateZero(page);
+        validation.ValidateZero(size);
+
         // 전체 조회하기
         return scheduleRepository.findAllSchedule(name, date, page, size);
     }
@@ -78,6 +82,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         // 작성자 id 가져오기
         Long writer_id = scheduleRepository.getWriterIdByScheduleId(id);
+
+        // null 체크
+        validation.ValidateNotNull(writer_id);
 
         // 작성자명 수정
         int updateWriterNameRow = writerRepository.updateWriterById(writer_id, scheduleUpdateRequestDto.getName(), getCurrentTime());

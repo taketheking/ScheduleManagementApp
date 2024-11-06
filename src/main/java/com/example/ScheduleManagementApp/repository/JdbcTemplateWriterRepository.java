@@ -38,7 +38,7 @@ public class JdbcTemplateWriterRepository implements WriterRepository {
     @Override
     public Long findScheduleByNameAndEmail(String name, String email) {
         return jdbcTemplate.query("select id from writers where name = ? and email = ?", (rs, num) -> rs.getLong("id"), name, email).stream()
-                .findAny().orElse(0L);
+                .findAny().orElse(null);
     }
 
     @Override

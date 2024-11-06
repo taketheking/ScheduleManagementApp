@@ -42,7 +42,6 @@ public class ScheduleController {
      * @return : {@link List<ScheduleResponseDto>} JSON 응답
      */
     @GetMapping
-
     public ResponseEntity<List<ScheduleResponseDto>> findAllSchedules(
             @RequestParam(required = false, defaultValue = "1") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,
