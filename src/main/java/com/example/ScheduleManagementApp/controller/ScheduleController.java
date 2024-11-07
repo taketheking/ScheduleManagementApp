@@ -83,7 +83,7 @@ public class ScheduleController {
 
         scheduleService.deleteScheduleById(id, scheduleDeleteRequestDto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 }
