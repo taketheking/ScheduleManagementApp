@@ -742,12 +742,12 @@ CREATE TABLE schedules
 ### 2) 작성자 생성 및 일정 생성
 ```sql
 -- Insert writers
-INSERT INTO writer (id, name, email, create_date)
-VALUES (1, "kim", "sparta@teamsparta.co.kr", 2024-10-29, 2024-10-30);
+INSERT INTO writers (id, name, email, enroll_date, modify_date)
+VALUES (1, 'kim', 'sparta@teamsparta.co.kr', '2024-10-29 20:11:02', '2024-10-30 15:11:02');
 
 -- Insert schedules
-INSERT INTO schedule (id, pw, schedule, enroll_date, modify_date, writer_id)
-VALUES (1,"abcd123","과제하기", 2024-10-29, 2024-10-30, 1);
+INSERT INTO schedules (id, schedule, pw, enroll_date, modify_date, writer_id)
+VALUES (1,'과제하기','abcd123', '2024-10-29 09:12:40', '2024-10-30 19:20:24', 1);
 ```
 
 
@@ -764,21 +764,20 @@ SELECT * FROM schedules WHERE id = 1;
 )
 ```
 
-### 5) 선택 일정 수정 및 유저 수정
+### 5) 선택 일정 수정 및 작성자 수정
 ```sql
 -- Update schedules
-UPDATE schedules SET schedule = "상담하기", update_date = "2024-10-30" WHERE id = 1;
+UPDATE schedules SET schedule = '상담하기', modify_date = '2024-10-30 14:20:05' WHERE id = 1;
 
 
 -- Update writers
-UPDATE writers SET name = "sewon", update_date = "2024-10-30" WHERE id = 1;
+UPDATE writers SET name = 'king', modify_date = '2024-10-30 11:04:49' WHERE id = 1;
 ```
 
 ### 6) 선택 일정 삭제
 ```sql
 -- Delete schedules with id 1
 DELETE FROM schedules WHERE id = 1;
-
 ```
 
 ## 5. 예시 API 결과 이미지
